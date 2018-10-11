@@ -1,0 +1,43 @@
+#在IDEA中，分别通过设置不同的Program arguments参数为--spring.profiles.active=peer1、--spring.profiles.active=peer2、--spring.profiles.active=peer3启动这三个注册中心服务
+
+---
+server:
+  port: 8771
+spring:
+  profiles: peer1
+  application:
+    name: eureka-ha
+eureka:
+  instance:
+    hostname: peer1
+  client:
+    serviceUrl:
+      defaultZone: http://peer2:8772/eureka/,http://peer3:8773/eureka/
+
+---
+server:
+  port: 8772
+spring:
+  profiles: peer2
+  application:
+    name: eureka-ha
+eureka:
+  instance:
+    hostname: peer2
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8771/eureka/,http://peer3:8773/eureka/
+
+---
+server:
+  port: 8773
+spring:
+  profiles: peer3
+  application:
+    name: eureka-ha
+eureka:
+  instance:
+    hostname: peer3
+  client:
+    serviceUrl:
+      defaultZone: http://peer1:8771/eureka/,http://peer2:8772/eureka/
